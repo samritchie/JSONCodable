@@ -11,33 +11,6 @@ import JSONCodable
 
 class TransformerTests: XCTestCase {
     
-    let testMessageJSON: [JSONObject] = [
-        [
-            "ID": 568,
-            "av": 125435865,
-            "ad": "2016-06-07",
-            "ar": 0,
-            "at": 0,
-            "ah": 0,
-            "aj": "te"
-        ]
-    ]
-    
-    let testMessageComplexJSON: [JSONObject] = [
-        [
-            "ID": 568,
-            "av": 125435865,
-            "ad": "2016-06-07",
-            "ar": 0,
-            "at": 0,
-            "ah": 0,
-            "aj": "te"
-        ],
-        [
-            "ID": 415
-        ]
-    ]
-    
     let encodedValue: [String: String] = [
         "name": "image-name",
         "uri": "http://www.example.com/image.png"

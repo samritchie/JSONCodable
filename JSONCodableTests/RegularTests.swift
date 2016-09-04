@@ -97,7 +97,17 @@ class RegularTests: XCTestCase {
                                                                                 "uri": "http://www.example.com/image2.png"])].map{ $0.name }],
                   "\(nestedCodableArray))")
     }
-    
+
+    func testArrayOfUsers() {
+        let userArray = [encodedValue, encodedValue]
+        guard let users = try? [User](array: userArray) else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(users[0], decodedValue)
+        XCTAssertEqual(users[1], decodedValue)
+    }
+
     func testDecodingNestedArray() {
         guard let user = try? User(object: encodedNestedArray) else {
             XCTFail()

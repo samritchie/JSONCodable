@@ -375,3 +375,10 @@ extension Sequence {
         return result
     }
 }
+
+//Initialize an array of JSONDecodable items in one step
+extension Array where Element: JSONDecodable {
+    public init(array: [JSONObject]) throws {
+        self = try array.map{ try Element.init(object: $0)}
+    }
+}

@@ -251,25 +251,13 @@ public class JSONDecoder {
         guard let value = get(key) else {
             return []
         }
-        guard let array = value as? [[Any]] else {
-            throw JSONDecodableError.incompatibleTypeError(key: key, elementType: type(of: value), expectedType: [[Element]].self)
-        }
-        
-        func mapping(this: Any) throws -> Element {
-            guard let that = this as? Element else {
-                throw JSONDecodableError.incompatibleTypeError(key: "something", elementType: type(of: this), expectedType: Element.self)
-            }
-            return that
-        }
-
-        guard let array2 = (try array.failingFlatMap { try $0.failingFlatMap { try mapping(this: $0) } }) else {
-            throw JSONDecodableError.incompatibleTypeError(key: key, elementType: type(of: value), expectedType: [[Element]].self)
-        }
-        
         var res:[[Element]] = []
-        
-        for x in array2 {
-            res.append(x)
+        if let array = value as? [[Element]] {
+            res = array
+        } else if let array = (value as AnyObject) as? [[Element]] {
+            res = array
+        } else {
+            throw JSONDecodableError.incompatibleTypeError(key: key, elementType: type(of: value), expectedType: [Element].self)
         }
         return res
     }

@@ -23,7 +23,8 @@ extension NestItem: JSONDecodable {
             places = try decoder.decode("places")
             business = try decoder.decode("business")
             assets = try decoder.decode("assets")
-        }catch{
+        }
+        catch {
             fatalError("\(error)")
         }
     }

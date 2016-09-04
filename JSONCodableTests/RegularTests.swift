@@ -12,10 +12,6 @@ func ==<T:Equatable>(lhs: [[T]], rhs: [[T]]) -> Bool {
     return lhs.count == rhs.count && !zip(lhs, rhs).contains { $0 != $1 }
 }
 
-func ==<T: Equatable>(lhs: [String: T], rhs: [String: T]) -> Bool {
-    
-}
-
 class RegularTests: XCTestCase {
     
     let nestedCodableArray: [String: Any] = [

@@ -146,17 +146,6 @@ public extension Dictionary {//where Key: String, Value: JSONEncodable {
 
 public class JSONEncoder {
     var object = JSONObject()
-  
-  public static func create(_ setup: @noescape (encoder: JSONEncoder) throws -> Void) rethrows -> JSONObject {
-    let encoder = JSONEncoder()
-    try setup(encoder: encoder)
-    return encoder.object
-  }
-  
-  private func update(object: JSONObject, keys: [String], value: AnyObject) -> JSONObject
-  {
-    var newObject = object
-    var newKeys = keys
     
     public static func create(_ setup: (_ encoder: JSONEncoder) throws -> Void) rethrows -> JSONObject {
         let encoder = JSONEncoder()

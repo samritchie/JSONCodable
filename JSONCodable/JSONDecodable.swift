@@ -251,12 +251,24 @@ public class JSONDecoder {
         guard let value = get(key) else {
             return []
         }
-        guard let array = value as? [[Element]] else {
-            throw JSONDecodableError.incompatibleTypeError(key: key, elementType: type(of: value), expectedType: [Element].self)
+        guard let array = value as? [[Any]] else {
+            throw JSONDecodableError.incompatibleTypeError(key: key, elementType: type(of: value), expectedType: [[Element]].self)
         }
+        
+        func mapping(this: Any) throws -> Element {
+            guard let that = this as? Element else {
+                throw JSONDecodableError.incompatibleTypeError(key: "something", elementType: type(of: this), expectedType: Element.self)
+            }
+            return that
+        }
+
+        guard let array2 = (try array.failingFlatMap { try $0.failingFlatMap { try mapping(this: $0) } }) else {
+            throw JSONDecodableError.incompatibleTypeError(key: key, elementType: type(of: value), expectedType: [[Element]].self)
+        }
+        
         var res:[[Element]] = []
         
-        for x in array {
+        for x in array2 {
             res.append(x)
         }
         return res
@@ -360,6 +372,17 @@ public class JSONDecoder {
         }
         guard let result = transformer.decoding(actual) else {
             throw JSONDecodableError.transformerFailedError(key: key)
+        }
+        return result
+    }
+}
+
+extension Sequence {
+    public func failingFlatMap<T>(transform: (Self.Iterator.Element) throws -> T?) rethrows -> [T]? {
+        var result: [T] = []
+        for element in self {
+            guard let transformed = try transform(element) else { return nil }
+            result.append(transformed)
         }
         return result
     }
